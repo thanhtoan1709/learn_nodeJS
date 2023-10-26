@@ -1,11 +1,24 @@
-const express = require("express");
-const path = require("path");
-const handlebars = require("express-handlebars");
-const morgan = require("morgan");
 
+import {
+  userRouter , studentRouter
+} from '../rountes/index.js';
+import express from 'express'
+import { fileURLToPath } from 'url';
+import path from 'path';
+import handlebars from "express-handlebars";
+import morgan from "morgan";
 const app = express();
 const port = 3001;
+// 
+app.use('/users',userRouter)
+app.use('/students',studentRouter)
 
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 
 app.use(express.static(path.join(__dirname, "public")));
 
 // http logger
@@ -28,7 +41,12 @@ app.get("/", (req, res) => {
 app.get("/new", (req, res) => {
   res.render("new");
 });
-
+app.get("/search", (req, res) => {
+  res.render("search");
+});
+app.post("/search", (req, res) => {
+  res.send("search");
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
